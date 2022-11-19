@@ -3,8 +3,12 @@ import http.server
 import socketserver
 import os
 from urllib.parse import urlparse, parse_qs
+import time
 
 #print('source code for "http.server":', http.server.__file__)
+
+os.environ['TZ'] = 'Europe/Warsaw'
+time.tzset()
 
 class web_server(http.server.SimpleHTTPRequestHandler):
     
@@ -20,11 +24,12 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.send_response(200)
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()
-            self.wfile.write(str.encode(f'{query_params}\n'))
 
             if query_params['cmd'] == ['rev']:
                 reversed_strgs = [strg[::-1] for strg in query_params['str']]
                 self.wfile.write(str.encode(f'{reversed_strgs}\n'))
+            elif query_params['cmd'] == ['time']:
+                self.wfile.write(str.encode(f'{time.strftime("%H:%M:%S")}\n'))
             else:
                 self.wfile.write(b"Hello World!\n")
             
