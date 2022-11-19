@@ -25,16 +25,14 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.send_header("Content-type", "text/html; charset=UTF-8")
             self.end_headers()
 
-
-            if query_params.get('cmd', None) == ['rev']:
+            if len(query_params) == 0:
+                self.wfile.write(b"Hello World!\n")
+            elif query_params.get('cmd', None) == ['rev']:
                 reversed_strgs = [strg[::-1] for strg in query_params.get('str', [])]
                 for strg in reversed_strgs:
                     self.wfile.write(str.encode(f'{strg}\n'))
             elif query_params.get('cmd', None) == ['time']:
                 self.wfile.write(str.encode(f'{time.strftime("%H:%M:%S")}\n'))
-            else:
-                self.wfile.write(b"Hello World!\n")
-            
         else:
             super().do_GET()
     
