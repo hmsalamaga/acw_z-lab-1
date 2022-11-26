@@ -8,6 +8,16 @@ import json
 
 class web_server(http.server.SimpleHTTPRequestHandler):
     
+    def _count_chars(self, strg):
+        counter = {
+            "lowercase" : 0,
+            "uppercase" : 0,
+            "digits" : 0,
+            "special" : 0
+        }
+
+        return counter
+    
     def do_GET(self):
 
         print(self.path)
@@ -22,7 +32,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             if query_params.get('str', None):
                 strg = query_params.get('str', None)[0]
-                self.wfile.write(str.encode(json.dumps({'received': strg})))
+                self.wfile.write(str.encode(json.dumps(self._count_chars(strg))))
         else:
             super().do_GET()
     
