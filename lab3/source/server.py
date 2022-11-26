@@ -42,7 +42,7 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             if query_params.get('str', None):
                 strg = query_params.get('str', None)[0]
-                self.wfile.write(str.encode(json.dumps(self._count_chars(strg))))
+                self.wfile.write(json.dumps(self._count_chars(strg), indent=2).encode('utf-8'))
         else:
             super().do_GET()
     
