@@ -16,6 +16,16 @@ class web_server(http.server.SimpleHTTPRequestHandler):
             "special" : 0
         }
 
+        for c in strg:
+            if c.isupper():
+                counter["uppercase"] += 1
+            elif c.islower():
+                counter["lowercase"] += 1
+            elif c.isdigit():
+                counter["digits"] += 1
+            else:
+                counter["special"] += 1
+
         return counter
     
     def do_GET(self):
